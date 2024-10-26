@@ -32,7 +32,7 @@ jar {
 
 checkstyle {
     toolVersion = '10.18.2'
-
+    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
 }
 
 publishing {
