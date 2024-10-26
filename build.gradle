@@ -1,0 +1,16 @@
+plugins {
+    id 'base'
+}
+
+defaultTasks 'build'
+
+allprojects {
+    group = 'com.github.yoshiyoshi441'
+    version = '1.0-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {}

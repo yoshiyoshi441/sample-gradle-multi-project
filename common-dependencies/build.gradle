@@ -1,0 +1,44 @@
+plugins {
+    id 'java-platform'
+    id 'maven-publish'
+}
+
+javaPlatform {
+    allowDependencies()
+}
+
+dependencies {
+    constraints {
+        api('com.github.yoshiyoshi441:common-data') {
+            version {
+                strictly("${project.version}")
+            }
+        }
+
+        api('org.apache.commons:commons-lang3') {
+            version {
+                strictly('3.17.0')
+            }
+        }
+
+        api('io.rest-assured:rest-assured') {
+            version {
+                strictly('5.5.0')
+            }
+        }
+    }
+
+    // BOM
+    api platform('org.springframework.boot:spring-boot-dependencies:3.3.5')
+    api platform('org.springframework.cloud:spring-cloud-dependencies:2023.0.3')
+    api platform('org.junit:junit-bom:5.10.0')
+}
+
+publishing {
+    publications {
+        // BOM用のpom.xmlを生成
+        mavenJava(MavenPublication) {
+            from components.javaPlatform
+        }
+    }
+}

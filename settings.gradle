@@ -1,0 +1,5 @@
+rootProject.name = 'sample-multi-project'
+include 'common-dependencies'
+include 'common-data'
+include 'api'
+

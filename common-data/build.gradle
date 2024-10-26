@@ -1,0 +1,60 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+//    id 'checkstyle'
+    id "com.github.spotbugs" version "6.0.25"
+    id 'jacoco'
+}
+
+dependencies {
+    implementation platform(project(':common-dependencies'))
+
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.assertj:assertj-core'
+}
+
+compileJava {
+    dependsOn processResources
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+// Javadocタスクの設定
+javadoc {
+    // Javadocのオプションを設定
+    options {
+        locale = 'ja_JP'
+        encoding = 'UTF-8'
+        failOnError = false
+    }
+}
+
+// source JARを生成するタスクの設定
+task sourceJar(type: Jar, dependsOn: classes) {
+    archiveClassifier = 'sources' // JARの識別子を設定
+    from sourceSets.main.allSource // メインソースセットを指定
+}
+
+// javadoc Jarを生成するタスクの設定
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier = 'javadoc' // JARの識別子を設定
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourceJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifact javadocJar
+            artifact sourceJar
+        }
+    }
+}

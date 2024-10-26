@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'org.springframework.boot' version '3.3.5'
+    id 'checkstyle'
+    id "com.github.spotbugs" version "6.0.25"
+    id 'jacoco'
+}
+
+dependencies {
+    implementation platform(project(':common-dependencies'))
+    implementation project(':common-data')
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.rest-assured:rest-assured'
+}
+
+compileJava {
+    dependsOn processResources
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+jar {
+    enabled = false
+}
+
+checkstyle {
+    toolVersion = '10.18.2'
+
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
